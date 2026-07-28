@@ -1,26 +1,152 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Class-based so the theme toggle (next-themes) can pin light/dark
+   explicitly, independent of the OS setting; next-themes applies this class
+   to <html> and defaults to "system" until the user picks one. */
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-flag-red: var(--flag-red);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  /* Radius scale from DESIGN.md: sm 8px / md 11px / lg 18px. Apple's system has
+     nothing between lg and a full pill, so xl aliases lg — reach for
+     `rounded-full` directly for pill shapes instead of a bigger token. */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.6875rem;
+  --radius-lg: 1.125rem;
+  --radius-xl: 1.125rem;
+  --radius-2xl: 1.125rem;
+  --radius-3xl: 1.125rem;
+  --radius-4xl: 1.125rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  /* Apple-analysis palette (DESIGN.md) adapted for a data dashboard: cards sit
+     as white "canvas" surfaces on a parchment page background, per the
+     store-utility-card pattern, rather than the marketing site's full-bleed
+     tiles. */
+  --background: #f5f5f7; /* canvas-parchment */
+  --foreground: #1d1d1f; /* ink */
+  --card: #ffffff; /* canvas */
+  --card-foreground: #1d1d1f;
+  --popover: #ffffff;
+  --popover-foreground: #1d1d1f;
+  --primary: #006a4e; /* Bangladesh flag green — bottle green field */
+  --primary-foreground: #ffffff;
+  --secondary: #fafafc; /* surface-pearl */
+  --secondary-foreground: #1d1d1f;
+  --muted: #f0f0f0; /* divider-soft */
+  --muted-foreground: #7a7a7a; /* ink-muted-48 */
+  --accent: #fafafc;
+  --accent-foreground: #1d1d1f;
+  --destructive: #ff3b30; /* Apple system red — not in DESIGN.md (a documented gap) */
+  --border: #e0e0e0; /* hairline */
+  --input: #d6d6d8; /* slightly darker than hairline so it reads against the muted fill */
+  --ring: #00a876; /* brighter than primary so the focus ring reads distinctly on white */
+  --flag-red: #f42a41; /* Bangladesh flag red disc — the literal flag mark only; "cheapest/winner" uses --primary/--ring green */
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  /* Dark-mode counterparts weren't part of the source analysis (see
+     DESIGN.md "Known Gaps"); this maps the marketing site's dark *product
+     tile* tones onto UI surfaces — tile-1/2/3 step from page bg to popover. */
+  --background: #1d1d1f; /* ink, reused as the dark canvas */
+  --foreground: #ffffff; /* body-on-dark */
+  --card: #272729; /* surface-tile-1 */
+  --card-foreground: #ffffff;
+  --popover: #2a2a2c; /* surface-tile-2 */
+  --popover-foreground: #ffffff;
+  --primary: #00875a; /* flag green, lifted a touch — the pure #006a4e reads too close to the dark tiles */
+  --primary-foreground: #ffffff;
+  --secondary: #252527; /* surface-tile-3 */
+  --secondary-foreground: #ffffff;
+  --muted: #2a2a2c;
+  --muted-foreground: #cccccc; /* body-muted */
+  --accent: #2a2a2c;
+  --accent-foreground: #ffffff;
+  --destructive: #ff453a;
+  --border: rgba(255, 255, 255, 0.14);
+  --input: rgba(255, 255, 255, 0.24);
+  --ring: #34d399; /* primary-on-dark — bright emerald reads clearly against a dark tile */
+  --flag-red: #ff5a6e; /* lifted from the flag's #f42a41 for contrast against dark tiles */
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background text-foreground;
+    /* Approximates SF Pro's rounded lowercase "a" on the Inter fallback. */
+    font-feature-settings: "ss03" 1;
+  }
+  html {
+    @apply font-sans;
+  }
+  /* Bangla mode swaps the whole UI to Hind Siliguri — Inter has no Bengali
+     glyphs, so this isn't just a style preference. */
+  html[lang="bn"] {
+    --font-sans: var(--font-bangla);
+  }
 }
