@@ -14,10 +14,12 @@ export interface Dictionary {
   tabBulk: string;
   orderDetailsTitle: string;
   orderDetailsDesc: string;
+  routeSection: string;
+  parcelSection: string;
   pickupLabel: string;
-  pickupHelp: string;
   deliveryLabel: string;
-  deliveryHelp: string;
+  searchDistrict: string;
+  noDistrictFound: string;
   weightLabel: string;
   priceLabel: string;
   codLabel: string;
@@ -28,8 +30,10 @@ export interface Dictionary {
   codFee: string;
   total: string;
   cheapestBadge: string;
-  cheapestLine: (courier: string, amount: string) => string;
-  savingsLine: (courier: string, amount: string, pct: string) => string;
+  bestPick: string;
+  youSave: string;
+  vsCourier: (courier: string) => string;
+  allCouriers: string;
   bulkTitle: string;
   bulkDesc: string;
   dropText: string;
@@ -68,12 +72,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
     tabBulk: "Bulk Upload",
     orderDetailsTitle: "Order Details",
     orderDetailsDesc: "Enter the shipment once — every courier's rate updates instantly.",
+    routeSection: "Route",
+    parcelSection: "Parcel",
     pickupLabel: "Pickup",
-    pickupHelp: "Each courier translates this to its own district numbering.",
     deliveryLabel: "Delivery",
-    deliveryHelp: "Each courier zones this route slightly differently, changing the tier.",
-    weightLabel: "Parcel Weight (kg)",
-    priceLabel: "Product Price (BDT)",
+    searchDistrict: "Search district…",
+    noDistrictFound: "No district found.",
+    weightLabel: "Weight (kg)",
+    priceLabel: "Price (BDT)",
     codLabel: "Cash on Delivery",
     codHelp: "Adds each courier's COD collection fee.",
     emptyState: "Enter a parcel weight to compare courier rates.",
@@ -82,12 +88,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
     codFee: "COD fee",
     total: "Total",
     cheapestBadge: "Cheapest",
-    cheapestLine: (courier, amount) => `${courier} is cheapest for this order at ${amount}`,
-    savingsLine: (courier, amount, pct) => ` — save ${amount} (${pct}%) vs ${courier}.`,
+    bestPick: "Best pick",
+    youSave: "You save",
+    vsCourier: (courier) => `vs ${courier}`,
+    allCouriers: "All couriers",
     bulkTitle: "Bulk Upload",
     bulkDesc:
       "Upload a CSV or Excel file of today's orders — every row gets auto-split to whichever courier is cheapest.",
-    dropText: "Drop a CSV or Excel file here, or",
+    dropText: "Drop a CSV or Excel file here",
     browseFiles: "Browse files",
     csvTemplate: "CSV template",
     excelTemplate: "Excel template",
@@ -123,12 +131,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
     tabBulk: "বাল্ক আপলোড",
     orderDetailsTitle: "অর্ডারের বিবরণ",
     orderDetailsDesc: "একবার শিপমেন্টের তথ্য দিন — প্রতিটি কুরিয়ারের রেট সাথে সাথে আপডেট হবে।",
+    routeSection: "রুট",
+    parcelSection: "পার্সেল",
     pickupLabel: "পিকআপ",
-    pickupHelp: "প্রতিটি কুরিয়ার এটি নিজস্ব জেলা নম্বরে রূপান্তর করে নেয়।",
     deliveryLabel: "ডেলিভারি",
-    deliveryHelp: "প্রতিটি কুরিয়ার এই রুটের জোন আলাদাভাবে ঠিক করে, যা রেট বদলে দিতে পারে।",
-    weightLabel: "পার্সেলের ওজন (কেজি)",
-    priceLabel: "পণ্যের মূল্য (টাকা)",
+    searchDistrict: "জেলা খুঁজুন…",
+    noDistrictFound: "কোনো জেলা পাওয়া যায়নি।",
+    weightLabel: "ওজন (কেজি)",
+    priceLabel: "মূল্য (টাকা)",
     codLabel: "ক্যাশ অন ডেলিভারি",
     codHelp: "প্রতিটি কুরিয়ারের সিওডি কালেকশন ফি যোগ হবে।",
     emptyState: "কুরিয়ার রেট তুলনা করতে পার্সেলের ওজন লিখুন।",
@@ -137,12 +147,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
     codFee: "সিওডি ফি",
     total: "সর্বমোট",
     cheapestBadge: "সবচেয়ে সাশ্রয়ী",
-    cheapestLine: (courier, amount) => `এই অর্ডারের জন্য সবচেয়ে সাশ্রয়ী ${courier}, খরচ ${amount}`,
-    savingsLine: (courier, amount, pct) => ` — ${courier}-এর তুলনায় ${amount} (${pct}%) সাশ্রয়।`,
+    bestPick: "সেরা পছন্দ",
+    youSave: "আপনার সাশ্রয়",
+    vsCourier: (courier) => `${courier}-এর তুলনায়`,
+    allCouriers: "সব কুরিয়ার",
     bulkTitle: "বাল্ক আপলোড",
     bulkDesc:
       "আজকের অর্ডারের CSV বা Excel ফাইল আপলোড করুন — প্রতিটি সারি স্বয়ংক্রিয়ভাবে সবচেয়ে সাশ্রয়ী কুরিয়ারে ভাগ হয়ে যাবে।",
-    dropText: "এখানে CSV বা Excel ফাইল টেনে আনুন, অথবা",
+    dropText: "এখানে CSV বা Excel ফাইল টেনে আনুন",
     browseFiles: "ফাইল বেছে নিন",
     csvTemplate: "CSV টেমপ্লেট",
     excelTemplate: "Excel টেমপ্লেট",

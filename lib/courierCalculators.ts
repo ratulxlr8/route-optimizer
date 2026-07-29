@@ -65,6 +65,15 @@ export const COURIER_DOT: Record<CourierName, string> = {
   Steadfast: "bg-blue-500",
 };
 
+/** Per-courier fill for the price-comparison bars — same brand hues as
+ *  COURIER_DOT, softened so a full-width bar doesn't overpower the row. */
+export const COURIER_BAR: Record<CourierName, string> = {
+  Pathao: "bg-red-500/55",
+  RedX: "bg-orange-500/55",
+  CarryBee: "bg-amber-500/55",
+  Steadfast: "bg-blue-500/55",
+};
+
 export interface CourierResult {
   courier: CourierName;
   zoneLabel: string;

@@ -11,7 +11,9 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Resolves to the composed stack defined on `html`, not to Geist Mono
+     directly, so the `font-mono` utility keeps the Bengali fallback too. */
+  --font-mono: var(--font-mono);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -38,6 +40,8 @@
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
+  --color-hero: var(--hero);
+  --color-gold: var(--gold);
   --color-flag-red: var(--flag-red);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
@@ -68,6 +72,13 @@
   --popover-foreground: #1d1d1f;
   --primary: #006a4e; /* Bangladesh flag green — bottle green field */
   --primary-foreground: #ffffff;
+  /* The hero panel gets its own gradient rather than reusing --primary: a
+     button green has to stay light enough to carry white label text, while a
+     large filled panel reads richer deep — and the deeper field is what gives
+     --gold room to hit AA contrast on top of it. */
+  --hero: #00604a; /* flat, single-colour hero — no gradient (see the note in page.tsx) */
+  --gold: #f5d78e; /* premium accent for the "best pick" marker — only ever used on the hero green */
+  --shadow-card: 0 1px 1px rgba(0, 0, 0, 0.03);
   --secondary: #fafafc; /* surface-pearl */
   --secondary-foreground: #1d1d1f;
   --muted: #f0f0f0; /* divider-soft */
@@ -106,6 +117,11 @@
   --popover-foreground: #ffffff;
   --primary: #00875a; /* flag green, lifted a touch — the pure #006a4e reads too close to the dark tiles */
   --primary-foreground: #ffffff;
+  /* Deeper than --primary on purpose (see the light-mode note): #00875a is
+     light enough that gold on it lands ~3.2:1, under AA for this label size. */
+  --hero: #00553f;
+  --gold: #f5d78e;
+  --shadow-card: none; /* on a dark canvas a drop shadow does nothing; the border carries the edge */
   --secondary: #252527; /* surface-tile-3 */
   --secondary-foreground: #ffffff;
   --muted: #2a2a2c;
@@ -136,6 +152,31 @@
   * {
     @apply border-border outline-ring/50;
   }
+  /* Tailwind v4's Preflight deliberately leaves <button> on the browser's
+     default arrow cursor, so every control in the app came out with an arrow.
+     Restoring it once here beats sprinkling `cursor-pointer` through ui/.
+     The role selectors are not redundant: Base UI renders Switch as a
+     <span role="switch">, so a `button`-only rule misses it. `label[for]`
+     is included because clicking it activates the control it points at.
+     Components' own `disabled:cursor-not-allowed` utilities still win, since
+     utilities cascade after this base layer. */
+  button,
+  summary,
+  label[for],
+  [role="button"],
+  [role="tab"],
+  [role="option"],
+  [role="switch"],
+  [role="checkbox"],
+  [role="radio"],
+  [role="menuitem"] {
+    cursor: pointer;
+  }
+  button:disabled,
+  [aria-disabled="true"],
+  [data-disabled] {
+    cursor: default;
+  }
   body {
     @apply bg-background text-foreground;
     /* Approximates SF Pro's rounded lowercase "a" on the Inter fallback. */
@@ -143,10 +184,76 @@
   }
   html {
     @apply font-sans;
+    /* Composed stacks rather than a per-language swap. CSS font fallback is
+       per-glyph, so Latin resolves from Inter (or Geist Mono) and Bengali
+       falls through to Noto Serif Bengali — in both languages. Two things
+       this fixes over swapping `--font-sans` on `html[lang="bn"]`: "RedX" now
+       looks identical in English and বাংলা, and Bengali strings shown while
+       the UI is in English (the বাংলা toggle label) no longer land on an
+       arbitrary system font. Noto Serif Bengali is last in the mono stack for
+       the same reason: `৳` is U+09F3, a Bengali codepoint Geist Mono doesn't
+       cover. */
+    --font-sans: var(--font-inter), var(--font-bangla), ui-sans-serif, system-ui,
+      sans-serif;
+    --font-mono: var(--font-geist-mono), var(--font-bangla), ui-monospace,
+      monospace;
   }
-  /* Bangla mode swaps the whole UI to Hind Siliguri — Inter has no Bengali
-     glyphs, so this isn't just a style preference. */
-  html[lang="bn"] {
-    --font-sans: var(--font-bangla);
+}
+
+@layer components {
+  /* Flat paper. This deliberately has no ambient gradient wash: a soft radial
+     tint behind everything is the fastest way to make a UI look like a
+     template, and the layout gets its depth from hairline rules instead. */
+  .app-canvas {
+    background-color: var(--background);
+  }
+
+  /* Surfaces are defined by their 1px edge, not by float. The shadow is barely
+     there — just enough to seat a panel on the paper. */
+  .elevate {
+    box-shadow: var(--shadow-card);
+  }
+  .elevate-hover {
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease;
+  }
+
+  /* Numerals: Geist Mono was already loaded by layout.tsx and never used.
+     Setting every taka figure and rank in it is what gives the UI a
+     measured-instrument feel rather than a generic sans dashboard. */
+  .numeric {
+    font-family: var(--font-mono);
+    font-feature-settings: "tnum" 1;
+    letter-spacing: -0.01em;
+  }
+
+  /* The one small-label treatment, used sparingly. Mono at rest rather than
+     uppercase + wide tracking, which reads as stock template styling. */
+  .micro {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+  }
+  /* Bengali has no monospace convention, and the space between two Bengali
+     words would be taken from Geist Mono — a full monospace advance, which
+     opens a visible gap mid-label ("সেরা  পছন্দ"). Labels revert to the sans
+     stack in বাংলা; figures (.numeric) stay mono either way, since digits are
+     Latin in both languages. */
+  :lang(bn) .micro {
+    font-family: var(--font-sans);
+    letter-spacing: 0;
+  }
+}
+
+/* Respect a reduced-motion preference: kill the entrance animations and the
+   hover lift, but keep colour/shadow transitions (they don't convey motion). */
+@media (prefers-reduced-motion: reduce) {
+  .elevate-hover:hover {
+    transform: none;
+  }
+  [class*="animate-in"] {
+    animation: none !important;
   }
 }

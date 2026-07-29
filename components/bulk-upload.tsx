@@ -97,13 +97,16 @@ export function BulkUpload() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
-      <Card>
+    <div className="flex flex-col gap-2.5">
+      <Card
+        size="sm"
+        className="elevate animate-in fade-in fill-mode-both gap-3 rounded-md duration-300"
+      >
         <CardHeader>
-          <CardTitle>{t.bulkTitle}</CardTitle>
-          <CardDescription>{t.bulkDesc}</CardDescription>
+          <CardTitle className="text-sm">{t.bulkTitle}</CardTitle>
+          <CardDescription className="text-xs">{t.bulkDesc}</CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col gap-4">
+        <CardContent className="flex flex-col gap-2.5">
           <div
             onDragOver={(event) => {
               event.preventDefault();
@@ -116,17 +119,47 @@ export function BulkUpload() {
               const file = event.dataTransfer.files?.[0];
               if (file) handleFile(file);
             }}
+            // Laid out as a horizontal band rather than a tall centred column:
+            // the drop target only has to be recognisable, not dominate the
+            // page, and this keeps the results visible without scrolling.
             className={cn(
-              "flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed px-6 py-10 text-center transition-colors",
-              isDragging ? "border-primary bg-primary/5" : "border-muted-foreground/25",
+              // Stacks below `sm` so the (longer) Bangla instruction isn't
+              // squeezed against the button on a phone.
+              "flex flex-col gap-2 rounded-md border-2 border-dashed px-3.5 py-3 transition-all duration-200 sm:flex-row sm:items-center sm:gap-3 sm:py-2.5",
+              isDragging
+                ? "border-primary bg-primary/8"
+                : "border-muted-foreground/25 hover:border-primary/40 hover:bg-primary/4",
             )}
           >
-            <Upload className="size-6 text-muted-foreground" />
-            <p className="text-sm font-medium">{t.dropText}</p>
+            <div className="flex min-w-0 flex-1 items-center gap-3">
+              <div
+                className={cn(
+                  "flex size-8 shrink-0 items-center justify-center rounded-full transition-transform duration-200",
+                  isDragging ? "scale-110 bg-primary/15" : "bg-muted",
+                )}
+              >
+                <Upload
+                  className={cn(
+                    "size-4 transition-colors",
+                    isDragging ? "text-primary dark:text-ring" : "text-muted-foreground",
+                  )}
+                />
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-medium">{t.dropText}</p>
+                {fileName && (
+                  <p className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <FileSpreadsheet className="size-3 shrink-0" />
+                    <span className="truncate">{fileName}</span>
+                  </p>
+                )}
+              </div>
+            </div>
             <Button
               type="button"
               variant="default"
               size="sm"
+              className="w-full shrink-0 sm:w-auto"
               onClick={() => fileInputRef.current?.click()}
             >
               {t.browseFiles}
@@ -141,15 +174,10 @@ export function BulkUpload() {
                 if (file) handleFile(file);
               }}
             />
-            {fileName && (
-              <p className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
-                <FileSpreadsheet className="size-3.5" /> {fileName}
-              </p>
-            )}
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1">
+          <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+            <div className="flex flex-wrap items-center gap-1">
               <Button
                 type="button"
                 variant="ghost"
@@ -192,7 +220,7 @@ export function BulkUpload() {
             )}
           </div>
 
-          <p className="text-xs text-muted-foreground">
+          <p className="text-[0.6875rem] leading-relaxed text-muted-foreground">
             {t.columnsPrefix} <code>order_id</code>, <code>location</code> (Inside
             Dhaka / Suburbs / Outside Dhaka), <code>weight_kg</code>,{" "}
             <code>product_price</code>, <code>cod</code> (yes/no).
@@ -201,14 +229,17 @@ export function BulkUpload() {
       </Card>
 
       {errors.length > 0 && (
-        <Card className="border-destructive/30">
+        <Card
+          size="sm"
+          className="elevate animate-in fade-in fill-mode-both rounded-md border-destructive/30 bg-destructive/4 duration-300"
+        >
           <CardHeader>
-            <CardTitle className="flex items-center gap-1.5 text-destructive">
+            <CardTitle className="flex items-center gap-1.5 text-sm text-destructive">
               <AlertTriangle className="size-4" /> {t.rowsSkipped(errors.length)}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ul className="flex flex-col gap-1 text-sm text-muted-foreground">
+            <ul className="flex flex-col gap-1 text-xs text-muted-foreground">
               {errors.map((error, index) => (
                 <li key={index}>
                   {error.rowNumber > 0 ? t.rowLabel(error.rowNumber) : ""}
@@ -222,46 +253,55 @@ export function BulkUpload() {
 
       {results.length > 0 && (
         <>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-            <Card>
-              <CardHeader>
-                <CardDescription>{t.ordersProcessed}</CardDescription>
-                <CardTitle className="text-2xl">
-                  {summary.totalOrders}
-                </CardTitle>
-              </CardHeader>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardDescription>{t.autoSplitTotal}</CardDescription>
-                <CardTitle className="text-2xl">
-                  {formatBDT(summary.autoSplitTotal)}
-                </CardTitle>
-              </CardHeader>
-            </Card>
-            <Card className="border-primary/40 bg-primary/8 dark:bg-primary/6">
-              <CardHeader>
-                <CardDescription>
-                  {summary.bestSingleCourier && t.savingsVsAll(summary.bestSingleCourier.courier)}
-                </CardDescription>
-                <CardTitle className="text-2xl text-primary dark:text-ring">
-                  {formatBDT(summary.savings)}
-                  {summary.savingsPct > 0 && (
-                    <span className="ml-1 text-sm font-normal text-muted-foreground">
-                      ({summary.savingsPct.toFixed(0)}%)
-                    </span>
-                  )}
-                </CardTitle>
-              </CardHeader>
-            </Card>
+          {/* One divided strip rather than three floating tiles, with the
+              savings cell inverted to green — the figure that matters carries
+              the colour, and nothing else has to shout. */}
+          <div className="elevate animate-in fade-in fill-mode-both grid grid-cols-1 divide-y divide-border overflow-hidden rounded-md border border-border bg-card duration-300 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+            <div className="p-3">
+              <div className="micro text-muted-foreground">{t.ordersProcessed}</div>
+              <div className="numeric mt-1.5 text-2xl">{summary.totalOrders}</div>
+            </div>
+            <div className="p-3">
+              <div className="micro text-muted-foreground">{t.autoSplitTotal}</div>
+              <div className="numeric mt-1.5 text-2xl">
+                {formatBDT(summary.autoSplitTotal)}
+              </div>
+            </div>
+            <div className="bg-hero p-3 text-white">
+              <div className="micro text-gold">
+                {summary.bestSingleCourier &&
+                  t.savingsVsAll(summary.bestSingleCourier.courier)}
+              </div>
+              <div className="numeric mt-1.5 text-2xl">
+                {formatBDT(summary.savings)}
+                {summary.savingsPct > 0 && (
+                  <span className="ml-1 text-sm text-white/60">
+                    ({summary.savingsPct.toFixed(0)}%)
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
 
-          <Card>
+          <Card
+            size="sm"
+            className="elevate animate-in fade-in fill-mode-both gap-3 rounded-md duration-300"
+          >
             <CardHeader>
-              <CardTitle>{t.splitBreakdownTitle}</CardTitle>
-              <CardDescription>{t.splitBreakdownDesc}</CardDescription>
-              <CardAction>
-                <div className="flex items-center gap-1">
+              <CardTitle className="col-start-1 row-start-1 text-sm">
+                {t.splitBreakdownTitle}
+              </CardTitle>
+              {/* Pinned explicitly: with the action moved out of column 2 on
+                  mobile (below), auto-placement would flow the description up
+                  beside the title instead of under it. */}
+              <CardDescription className="col-start-1 row-start-2 text-xs">
+                {t.splitBreakdownDesc}
+              </CardDescription>
+              {/* CardHeader's default action slot pins to a second grid
+                  column, which crowds the wrapped Bangla title on a phone.
+                  Below `sm` the buttons drop onto their own row instead. */}
+              <CardAction className="col-start-1 row-start-3 mt-1 justify-self-start sm:col-start-2 sm:row-span-2 sm:row-start-1 sm:mt-0 sm:justify-self-end">
+                <div className="flex flex-wrap items-center gap-1">
                   <Button
                     type="button"
                     variant="outline"
@@ -305,7 +345,10 @@ export function BulkUpload() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card
+            size="sm"
+            className="elevate animate-in fade-in fill-mode-both overflow-x-auto rounded-md duration-300"
+          >
             <CardContent className="p-0">
               <Table>
                 <TableHeader>
@@ -321,17 +364,20 @@ export function BulkUpload() {
                 </TableHeader>
                 <TableBody>
                   {results.map((result) => (
-                    <TableRow key={result.rowNumber}>
+                    <TableRow
+                      key={result.rowNumber}
+                      className="transition-colors hover:bg-secondary/70"
+                    >
                       <TableCell className="font-medium">
                         {result.orderId}
                       </TableCell>
                       <TableCell className="text-muted-foreground">
                         {result.best.zoneLabel}
                       </TableCell>
-                      <TableCell className="text-muted-foreground">
+                      <TableCell className="numeric text-muted-foreground">
                         {result.weightKg}kg
                       </TableCell>
-                      <TableCell className="text-muted-foreground">
+                      <TableCell className="numeric text-muted-foreground">
                         {formatBDT(result.productPrice)}
                       </TableCell>
                       <TableCell className="text-muted-foreground">
@@ -345,7 +391,7 @@ export function BulkUpload() {
                           {result.best.courier}
                         </span>
                       </TableCell>
-                      <TableCell className="text-right font-medium tabular-nums">
+                      <TableCell className="numeric text-right font-medium">
                         {formatBDT(result.best.totalCharge)}
                       </TableCell>
                     </TableRow>
@@ -358,8 +404,8 @@ export function BulkUpload() {
       )}
 
       {results.length === 0 && errors.length === 0 && (
-        <Card>
-          <CardContent className="py-10 text-center text-sm text-muted-foreground">
+        <Card className="elevate animate-in fade-in fill-mode-both rounded-md delay-100 duration-300">
+          <CardContent className="py-7 text-center text-sm text-muted-foreground">
             {t.bulkEmptyState}
           </CardContent>
         </Card>
