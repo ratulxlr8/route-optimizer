@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import { ArrowRight, Boxes, Package } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
@@ -20,7 +21,19 @@ import {
   TabsPanel,
   TabsTab,
 } from "@/components/ui/tabs";
-import { BulkUpload } from "@/components/bulk-upload";
+// Code-split: the bulk tab (plus its Excel read/write deps) only ships to
+// users who actually open it, instead of loading in every visitor's
+// initial bundle for a feature most single-order users never touch.
+const BulkUpload = dynamic(
+  () => import("@/components/bulk-upload").then((mod) => mod.BulkUpload),
+  {
+    loading: () => (
+      <div className="flex min-h-40 items-center justify-center">
+        <div className="size-5 animate-spin rounded-full border-2 border-muted-foreground/30 border-t-muted-foreground" />
+      </div>
+    ),
+  },
+);
 import { LanguageToggle } from "@/components/language-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
 import {

@@ -1,0 +1,15 @@
+# Cloudflare Pages reads this file from the deploy root (this app's static
+# export copies public/ verbatim into out/) to set response headers at the
+# edge, without needing a Worker.
+
+# Next.js content-hashes every file under _next/static/ (the filename itself
+# changes on any change), so these are safe to cache forever — a redeploy
+# ships new filenames, never stale content under an old one.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML shells aren't hashed and can change on every deploy; keep them
+# revalidating so users always get the latest build promptly while still
+# letting Cloudflare's edge cache absorb repeat requests between deploys.
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate

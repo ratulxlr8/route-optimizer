@@ -4,9 +4,6 @@
  * app's "zero backend" architecture.
  */
 
-import { readSheet } from "read-excel-file/browser";
-import writeXlsxFile from "write-excel-file/browser";
-
 import {
   type CalculatorInput,
   type CourierName,
@@ -239,6 +236,9 @@ export function parseBulkOrdersCsv(text: string): BulkParseOutcome {
 
 export async function parseBulkOrdersXlsx(file: File | Blob | ArrayBuffer): Promise<BulkParseOutcome> {
   try {
+    // Dynamically imported so the ~370KB xlsx parser only ships to users who
+    // actually upload an Excel file, not every visitor's initial bundle.
+    const { readSheet } = await import("read-excel-file/browser");
     const sheetData = await readSheet(file);
     const table = sheetData.map((row) => row.map((cell) => (cell == null ? "" : String(cell))));
     return processTable(table);
@@ -307,7 +307,8 @@ export function generateBulkTemplateCsv(): string {
     .join("\n");
 }
 
-export function generateBulkTemplateXlsxBlob(): Promise<Blob> {
+export async function generateBulkTemplateXlsxBlob(): Promise<Blob> {
+  const { default: writeXlsxFile } = await import("write-excel-file/browser");
   const sheetData = [TEMPLATE_HEADER, ...TEMPLATE_EXAMPLE_ROWS];
   return writeXlsxFile(sheetData).toBlob();
 }
@@ -337,7 +338,8 @@ export function bulkResultsToCsv(results: BulkOrderResult[]): string {
   return [RESULTS_HEADER, ...rows].map((row) => row.map(csvEscape).join(",")).join("\n");
 }
 
-export function bulkResultsToXlsxBlob(results: BulkOrderResult[]): Promise<Blob> {
+export async function bulkResultsToXlsxBlob(results: BulkOrderResult[]): Promise<Blob> {
+  const { default: writeXlsxFile } = await import("write-excel-file/browser");
   const rows = results.map((result) => [
     result.orderId,
     result.location,
