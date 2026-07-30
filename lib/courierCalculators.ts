@@ -1,5 +1,5 @@
 /**
- * Smart Courier Auto-Splitter — pricing engine.
+ * FleetSplit — pricing engine.
  *
  * All four couriers now price a real pickup/delivery district pair,
  * reverse-engineered from each courier's own live calculator (see
@@ -250,17 +250,20 @@ export const CANONICAL_DISTRICT = {
   SUBURB_REPRESENTATIVE: 19,
 } as const;
 
-// The Dhaka-adjacent districts this app's assumed "Suburbs" bucket covers —
-// these five make up the greater Dhaka commuter belt. No courier's real
-// pricing reads this anymore (all four now price real district pairs
-// directly), but bulk CSV rows still only carry this generic zone, so it's
-// still needed to convert one into a stand-in real district (below).
+// The Dhaka-adjacent districts this app's assumed "Suburbs" bucket covers.
+// Live-read by two things: bulk CSV rows (which only carry this generic
+// zone, converted to a stand-in real district below) and RedX's single-order
+// zoneId (`redxZoneId`, below) — RedX has no per-district suburb list of its
+// own, so this stands in for it. Gazipur/Narayanganj/Munshiganj confirmed
+// against RedX's own area-rate sheet (every Gazipur/Narayanganj area, and
+// most Munshiganj areas, bill at RedX's 90/105/120 suburb tier). Manikganj
+// and Narsingdi were removed after that same sheet showed every one of their
+// areas billing at the 120/150/180 outside tier instead — including them
+// here undercharged those two districts relative to RedX's real rates.
 const SUBURB_DISTRICT_IDS = new Set([
   19, // Gazipur
   43, // Narayanganj
   39, // Munshiganj
-  36, // Manikganj
-  44, // Narsingdi
   DHAKA_SUBURB_PSEUDO_ID,
 ]);
 

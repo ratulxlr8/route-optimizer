@@ -48,17 +48,6 @@ import { BANGLADESH_DISTRICTS } from "@/lib/districts";
 import { useLanguage } from "@/lib/language-store";
 import { formatBDT } from "@/lib/utils";
 
-// Bangladesh's flag, simplified to a mark: green field, red disc offset
-// toward the hoist so it still reads correctly when mirrored/cropped small.
-function BangladeshFlagMark({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 20 12" className={className} aria-hidden="true">
-      <rect width="20" height="12" fill="var(--primary)" />
-      <circle cx="8.5" cy="6" r="3.6" fill="var(--flag-red)" />
-    </svg>
-  );
-}
-
 /** Combobox items, built once at module scope. The identity of each object has
  *  to be stable across renders: Base UI compares the selected value against
  *  `items` with `Object.is` by default, so rebuilding this per render would
@@ -281,8 +270,9 @@ export default function Home() {
     <div className="app-canvas flex flex-1 flex-col">
       <header className="border-b border-border bg-card">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6">
-          <div className="flex items-baseline gap-2.5">
-            <BangladeshFlagMark className="h-3 w-auto translate-y-px" />
+          <div className="flex items-center gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element -- static export, no next/image loader configured */}
+            <img src="/logo-mark.png" alt="" width={217} height={200} className="h-7 w-auto" />
             <h1 className="text-sm font-medium tracking-tight">{t.appName}</h1>
             {/* Prose, so it stays in the sans face — the mono treatment is
                 reserved for labels and figures. */}

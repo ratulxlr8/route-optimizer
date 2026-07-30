@@ -66,7 +66,7 @@ export interface Dictionary {
 
 export const dictionaries: Record<Lang, Dictionary> = {
   en: {
-    appName: "Smart Courier Auto-Splitter",
+    appName: "FleetSplit",
     tagline: "Find the cheapest courier for every order",
     tabSingle: "Single Order",
     tabBulk: "Bulk Upload",
@@ -125,7 +125,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     bulkEmptyState: "Upload a CSV or Excel file to see the auto-split plan for every order.",
   },
   bn: {
-    appName: "স্মার্ট কুরিয়ার অটো-স্প্লিটার",
+    appName: "FleetSplit",
     tagline: "প্রতিটি অর্ডারের জন্য সবচেয়ে সাশ্রয়ী কুরিয়ার খুঁজে নিন",
     tabSingle: "একক অর্ডার",
     tabBulk: "বাল্ক আপলোড",
