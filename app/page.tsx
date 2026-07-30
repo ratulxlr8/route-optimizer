@@ -35,7 +35,9 @@ const BulkUpload = dynamic(
   },
 );
 import { LanguageToggle } from "@/components/language-toggle";
+import { ProductTour, type TourStep } from "@/components/product-tour";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { TourHelpButton } from "@/components/tour-help-button";
 import {
   COURIER_BAR,
   COURIER_DOT,
@@ -46,6 +48,7 @@ import {
 } from "@/lib/courierCalculators";
 import { BANGLADESH_DISTRICTS } from "@/lib/districts";
 import { useLanguage } from "@/lib/language-store";
+import { useAutoStartTour } from "@/lib/tour-store";
 import { formatBDT } from "@/lib/utils";
 
 /** Combobox items, built once at module scope. The identity of each object has
@@ -210,6 +213,7 @@ function CourierRow({
 
 export default function Home() {
   const { t } = useLanguage();
+  useAutoStartTour();
   const [pickupDistrictId, setPickupDistrictId] = useState<number>(
     CANONICAL_DISTRICT.DHAKA,
   );
@@ -266,6 +270,27 @@ export default function Home() {
       .filter((part) => part !== null)
       .join(" · ");
 
+  const tourSteps: TourStep[] = useMemo(
+    () => [
+      { title: t.tourWelcomeTitle, description: t.tourWelcomeDesc },
+      { selector: '[data-tour="route"]', title: t.tourRouteTitle, description: t.tourRouteDesc },
+      { selector: '[data-tour="parcel"]', title: t.tourParcelTitle, description: t.tourParcelDesc },
+      { selector: '[data-tour="cod"]', title: t.tourCodTitle, description: t.tourCodDesc },
+      {
+        selector: '[data-tour="best-pick"]',
+        title: t.tourBestPickTitle,
+        description: t.tourBestPickDesc,
+      },
+      {
+        selector: '[data-tour="all-couriers"]',
+        title: t.tourAllCouriersTitle,
+        description: t.tourAllCouriersDesc,
+      },
+      { selector: '[data-tour="bulk-tab"]', title: t.tourBulkTitle, description: t.tourBulkDesc },
+    ],
+    [t],
+  );
+
   return (
     <div className="app-canvas flex flex-1 flex-col">
       <header className="border-b border-border bg-card">
@@ -281,6 +306,7 @@ export default function Home() {
             </span>
           </div>
           <div className="flex items-center gap-1">
+            <TourHelpButton />
             <LanguageToggle />
             <ThemeToggle />
           </div>
@@ -294,7 +320,7 @@ export default function Home() {
             <TabsTab value="single">
               <Package /> {t.tabSingle}
             </TabsTab>
-            <TabsTab value="bulk">
+            <TabsTab value="bulk" data-tour="bulk-tab">
               <Boxes /> {t.tabBulk}
             </TabsTab>
           </TabsList>
@@ -313,7 +339,10 @@ export default function Home() {
                   row to its end edge puts this h-9 arrow box flush against
                   the same bottom edge the triggers end on — no manual
                   offset needed to center it on the fields. */}
-              <div className="grid grid-cols-[1fr_auto_1fr] items-end gap-2 p-3 sm:p-3.5">
+              <div
+                data-tour="route"
+                className="grid grid-cols-[1fr_auto_1fr] items-end gap-2 p-3 sm:p-3.5"
+              >
                 <DistrictField
                   id="pickup"
                   label={t.pickupLabel}
@@ -335,7 +364,7 @@ export default function Home() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-2.5 p-3 sm:p-3.5">
+              <div data-tour="parcel" className="grid grid-cols-2 gap-2.5 p-3 sm:p-3.5">
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor="weight" className="text-xs text-muted-foreground">
                     {t.weightLabel}
@@ -366,7 +395,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between gap-3 p-3 sm:p-3.5">
+              <div data-tour="cod" className="flex items-center justify-between gap-3 p-3 sm:p-3.5">
                 <div className="min-w-0">
                   <Label htmlFor="cod" className="text-xs font-medium">
                     {t.codLabel}
@@ -392,7 +421,10 @@ export default function Home() {
                       corner glow: both are template signatures. The weight
                       comes from the type — a large mono figure against a
                       quiet green field. */}
-                  <section className="animate-in fade-in fill-mode-both rounded-md bg-hero px-4 py-3.5 text-white duration-300 sm:px-6 sm:py-5">
+                  <section
+                    data-tour="best-pick"
+                    className="animate-in fade-in fill-mode-both rounded-md bg-hero px-4 py-3.5 text-white duration-300 sm:px-6 sm:py-5"
+                  >
                     <div className="flex items-start justify-between gap-4">
                       <span className="micro text-gold">{t.bestPick}</span>
                       <span className="micro text-white/55">{t.total}</span>
@@ -429,7 +461,7 @@ export default function Home() {
                     )}
                   </section>
 
-                  <section>
+                  <section data-tour="all-couriers">
                     <div className="mb-2 flex items-baseline justify-between">
                       <h2 className="text-xs font-medium text-muted-foreground">
                         {t.allCouriers}
@@ -462,6 +494,18 @@ export default function Home() {
           </TabsPanel>
         </Tabs>
       </main>
+
+      <ProductTour
+        steps={tourSteps}
+        labels={{
+          next: t.tourNext,
+          back: t.tourBack,
+          skip: t.tourSkip,
+          start: t.tourStart,
+          finish: t.tourFinish,
+          stepOf: t.tourStepOf,
+        }}
+      />
     </div>
   );
 }

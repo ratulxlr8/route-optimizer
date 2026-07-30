@@ -62,6 +62,27 @@ export interface Dictionary {
   codYes: string;
   codNo: string;
   bulkEmptyState: string;
+  tourHelpLabel: string;
+  tourWelcomeTitle: string;
+  tourWelcomeDesc: string;
+  tourRouteTitle: string;
+  tourRouteDesc: string;
+  tourParcelTitle: string;
+  tourParcelDesc: string;
+  tourCodTitle: string;
+  tourCodDesc: string;
+  tourBestPickTitle: string;
+  tourBestPickDesc: string;
+  tourAllCouriersTitle: string;
+  tourAllCouriersDesc: string;
+  tourBulkTitle: string;
+  tourBulkDesc: string;
+  tourNext: string;
+  tourBack: string;
+  tourSkip: string;
+  tourStart: string;
+  tourFinish: string;
+  tourStepOf: (step: number, total: number) => string;
 }
 
 export const dictionaries: Record<Lang, Dictionary> = {
@@ -123,6 +144,33 @@ export const dictionaries: Record<Lang, Dictionary> = {
     codYes: "Yes",
     codNo: "No",
     bulkEmptyState: "Upload a CSV or Excel file to see the auto-split plan for every order.",
+    tourHelpLabel: "How it works",
+    tourWelcomeTitle: "Welcome to FleetSplit",
+    tourWelcomeDesc:
+      "A 30-second tour of how to compare courier rates and auto-split bulk orders. Ready?",
+    tourRouteTitle: "Set your route",
+    tourRouteDesc: "Choose the pickup and delivery district — rates depend on both.",
+    tourParcelTitle: "Add parcel details",
+    tourParcelDesc:
+      "Enter the weight and product price. Every courier's rate updates instantly as you type.",
+    tourCodTitle: "Cash on Delivery",
+    tourCodDesc:
+      "Turn this on if the order is COD — each courier charges a different collection fee.",
+    tourBestPickTitle: "Your cheapest option",
+    tourBestPickDesc:
+      "FleetSplit always surfaces the cheapest courier for this exact route and weight, plus how much you save.",
+    tourAllCouriersTitle: "Compare every courier",
+    tourAllCouriersDesc:
+      "See all rates ranked side-by-side, cheapest first — hover a row for the full fee breakdown.",
+    tourBulkTitle: "Got a whole day's orders?",
+    tourBulkDesc:
+      "Switch to Bulk Upload to auto-split a CSV or Excel file of orders across couriers in one go.",
+    tourNext: "Next",
+    tourBack: "Back",
+    tourSkip: "Skip tour",
+    tourStart: "Start tour",
+    tourFinish: "Got it",
+    tourStepOf: (step, total) => `${step} of ${total}`,
   },
   bn: {
     appName: "FleetSplit",
@@ -181,5 +229,31 @@ export const dictionaries: Record<Lang, Dictionary> = {
     codYes: "হ্যাঁ",
     codNo: "না",
     bulkEmptyState: "প্রতিটি অর্ডারের অটো-স্প্লিট পরিকল্পনা দেখতে একটি CSV বা Excel ফাইল আপলোড করুন।",
+    tourHelpLabel: "কীভাবে কাজ করে",
+    tourWelcomeTitle: "FleetSplit-এ স্বাগতম",
+    tourWelcomeDesc:
+      "কুরিয়ার রেট তুলনা আর বাল্ক অর্ডার অটো-স্প্লিট করার ৩০ সেকেন্ডের একটি গাইড। শুরু করবেন?",
+    tourRouteTitle: "আপনার রুট নির্বাচন করুন",
+    tourRouteDesc: "পিকআপ ও ডেলিভারি জেলা বেছে নিন — রেট দুটোর উপরই নির্ভর করে।",
+    tourParcelTitle: "পার্সেলের তথ্য দিন",
+    tourParcelDesc:
+      "ওজন ও পণ্যের মূল্য লিখুন। টাইপ করার সাথে সাথেই প্রতিটি কুরিয়ারের রেট আপডেট হবে।",
+    tourCodTitle: "ক্যাশ অন ডেলিভারি",
+    tourCodDesc: "অর্ডারটি COD হলে এটি চালু করুন — প্রতিটি কুরিয়ারের কালেকশন ফি ভিন্ন।",
+    tourBestPickTitle: "সবচেয়ে সাশ্রয়ী অপশন",
+    tourBestPickDesc:
+      "এই রুট ও ওজনের জন্য সবচেয়ে সাশ্রয়ী কুরিয়ার এবং কত সাশ্রয় হচ্ছে তা FleetSplit সবসময় সামনে দেখায়।",
+    tourAllCouriersTitle: "সব কুরিয়ার তুলনা করুন",
+    tourAllCouriersDesc:
+      "সবচেয়ে সাশ্রয়ী থেকে শুরু করে সব রেট পাশাপাশি দেখুন — হোভার করলে পুরো ফি ভাঙন দেখা যাবে।",
+    tourBulkTitle: "একদিনের সব অর্ডার একসাথে?",
+    tourBulkDesc:
+      "CSV বা Excel ফাইল আপলোড করে একসাথে সব অর্ডার কুরিয়ারে অটো-স্প্লিট করতে বাল্ক আপলোডে যান।",
+    tourNext: "পরবর্তী",
+    tourBack: "পেছনে",
+    tourSkip: "টুর বাদ দিন",
+    tourStart: "টুর শুরু করুন",
+    tourFinish: "বুঝেছি",
+    tourStepOf: (step, total) => `${total}-এর মধ্যে ${step}`,
   },
 };
