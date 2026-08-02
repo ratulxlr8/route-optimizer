@@ -41,6 +41,7 @@ import {
 } from "@/lib/bulkOrders";
 import { COURIER_DOT } from "@/lib/courierCalculators";
 import { useLanguage } from "@/lib/language-store";
+import { addLifetimeSavings } from "@/lib/savings-store";
 import { cn, formatBDT } from "@/lib/utils";
 
 function downloadBlob(filename: string, blob: Blob) {
@@ -71,7 +72,9 @@ export function BulkUpload() {
 
     if (EXCEL_EXTENSION_RE.test(file.name)) {
       parseBulkOrdersXlsx(file).then(({ rows, errors: parseErrors }) => {
-        setResults(computeBulkResults(rows));
+        const computed = computeBulkResults(rows);
+        addLifetimeSavings(summarizeBulkResults(computed).savings);
+        setResults(computed);
         setErrors(parseErrors);
       });
       return;
@@ -81,7 +84,9 @@ export function BulkUpload() {
     reader.onload = () => {
       const text = String(reader.result ?? "");
       const { rows, errors: parseErrors } = parseBulkOrdersCsv(text);
-      setResults(computeBulkResults(rows));
+      const computed = computeBulkResults(rows);
+      addLifetimeSavings(summarizeBulkResults(computed).savings);
+      setResults(computed);
       setErrors(parseErrors);
     };
     reader.readAsText(file);

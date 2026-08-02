@@ -91,6 +91,9 @@ export interface Dictionary {
   seoStep3: string;
   seoLinksTitle: string;
   seoLinksIntro: string;
+  saveRouteLabel: string;
+  removeRouteLabel: string;
+  lifetimeSavings: (amount: string) => string;
 }
 
 export const dictionaries: Record<Lang, Dictionary> = {
@@ -189,6 +192,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       "FleetSplit ranks Pathao, RedX, CarryBee, and Steadfast by total charge — cheapest first.",
     seoLinksTitle: "Courier rate details",
     seoLinksIntro: "See the full rate table and zone logic for each courier:",
+    saveRouteLabel: "Save this route",
+    removeRouteLabel: "Remove saved route",
+    lifetimeSavings: (amount) => `Saved ${amount} so far`,
   },
   bn: {
     appName: "FleetSplit",
@@ -283,5 +289,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       "FleetSplit সর্বমোট চার্জ অনুযায়ী Pathao, RedX, CarryBee এবং Steadfast-কে র‍্যাঙ্ক করে — সবচেয়ে সাশ্রয়ীটি সবার আগে।",
     seoLinksTitle: "কুরিয়ারভিত্তিক রেট বিস্তারিত",
     seoLinksIntro: "প্রতিটি কুরিয়ারের সম্পূর্ণ রেট টেবিল ও জোন লজিক দেখুন:",
+    saveRouteLabel: "এই রুট সংরক্ষণ করুন",
+    removeRouteLabel: "সংরক্ষিত রুট মুছুন",
+    lifetimeSavings: (amount) => `এ পর্যন্ত সাশ্রয় ${amount}`,
   },
 };

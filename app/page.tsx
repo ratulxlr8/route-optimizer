@@ -3,8 +3,9 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { ArrowRight, Boxes, Package } from "lucide-react";
+import { ArrowRight, Boxes, Package, Star, X } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -49,8 +50,10 @@ import {
 } from "@/lib/courierCalculators";
 import { BANGLADESH_DISTRICTS } from "@/lib/districts";
 import { useLanguage } from "@/lib/language-store";
+import { removeSavedRoute, toggleSavedRoute, useSavedRoutes } from "@/lib/saved-routes-store";
+import { useLifetimeSavings } from "@/lib/savings-store";
 import { useAutoStartTour } from "@/lib/tour-store";
-import { formatBDT } from "@/lib/utils";
+import { cn, formatBDT } from "@/lib/utils";
 
 /** Combobox items, built once at module scope. The identity of each object has
  *  to be stable across renders: Base UI compares the selected value against
@@ -61,6 +64,13 @@ const DISTRICT_ITEMS = BANGLADESH_DISTRICTS.map((district) => ({
   value: String(district.id),
   label: district.name,
 }));
+
+/** Looks up a district's display name for saved-route chips — the chips
+ *  only ever have the id pair, not the label, since that's all the store
+ *  persists. */
+function districtName(id: number): string {
+  return DISTRICT_ITEMS.find((item) => item.value === String(id))?.label ?? "";
+}
 
 /** A searchable district picker — 64 districts is far too many to scan, so the
  *  popup filters as you type. Both Pickup and Delivery are the same control,
@@ -225,6 +235,14 @@ export default function Home() {
   const [productPrice, setProductPrice] = useState("1200");
   const [isCOD, setIsCOD] = useState(true);
 
+  const savedRoutes = useSavedRoutes();
+  const lifetimeSavings = useLifetimeSavings();
+  const isCurrentRouteSaved = savedRoutes.some(
+    (route) =>
+      route.pickupDistrictId === pickupDistrictId &&
+      route.deliveryDistrictId === deliveryDistrictId,
+  );
+
   const weight = Math.max(0, Number(weightKg) || 0);
   const price = Math.max(0, Number(productPrice) || 0);
 
@@ -305,6 +323,14 @@ export default function Home() {
             <span className="hidden text-xs text-muted-foreground sm:inline">
               {t.tagline}
             </span>
+            {/* Only appears once a bulk batch has actually been processed —
+                a "Saved ৳0 so far" badge on a brand-new visit reads as
+                broken, not motivating. */}
+            {lifetimeSavings > 0 && (
+              <span className="hidden items-center rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary sm:inline-flex dark:bg-ring/15 dark:text-ring">
+                {t.lifetimeSavings(formatBDT(lifetimeSavings))}
+              </span>
+            )}
           </div>
           <div className="flex items-center gap-1">
             <TourHelpButton />
@@ -340,29 +366,76 @@ export default function Home() {
                   row to its end edge puts this h-9 arrow box flush against
                   the same bottom edge the triggers end on — no manual
                   offset needed to center it on the fields. */}
-              <div
-                data-tour="route"
-                className="grid grid-cols-[1fr_auto_1fr] items-end gap-2 p-3 sm:p-3.5"
-              >
-                <DistrictField
-                  id="pickup"
-                  label={t.pickupLabel}
-                  value={pickupDistrictId}
-                  onChange={setPickupDistrictId}
-                  searchPlaceholder={t.searchDistrict}
-                  emptyMessage={t.noDistrictFound}
-                />
-                <div className="flex h-9 items-center justify-center text-muted-foreground/50">
-                  <ArrowRight className="size-3.5" />
+              <div data-tour="route" className="p-3 sm:p-3.5">
+                <div className="grid grid-cols-[1fr_auto_1fr_auto] items-end gap-2">
+                  <DistrictField
+                    id="pickup"
+                    label={t.pickupLabel}
+                    value={pickupDistrictId}
+                    onChange={setPickupDistrictId}
+                    searchPlaceholder={t.searchDistrict}
+                    emptyMessage={t.noDistrictFound}
+                  />
+                  <div className="flex h-9 items-center justify-center text-muted-foreground/50">
+                    <ArrowRight className="size-3.5" />
+                  </div>
+                  <DistrictField
+                    id="delivery"
+                    label={t.deliveryLabel}
+                    value={deliveryDistrictId}
+                    onChange={setDeliveryDistrictId}
+                    searchPlaceholder={t.searchDistrict}
+                    emptyMessage={t.noDistrictFound}
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    aria-label={t.saveRouteLabel}
+                    title={t.saveRouteLabel}
+                    onClick={() => toggleSavedRoute(pickupDistrictId, deliveryDistrictId)}
+                  >
+                    <Star
+                      className={cn(
+                        "size-4",
+                        isCurrentRouteSaved && "fill-primary text-primary dark:fill-ring dark:text-ring",
+                      )}
+                    />
+                  </Button>
                 </div>
-                <DistrictField
-                  id="delivery"
-                  label={t.deliveryLabel}
-                  value={deliveryDistrictId}
-                  onChange={setDeliveryDistrictId}
-                  searchPlaceholder={t.searchDistrict}
-                  emptyMessage={t.noDistrictFound}
-                />
+
+                {savedRoutes.length > 0 && (
+                  <div className="mt-2.5 flex flex-wrap gap-1.5">
+                    {savedRoutes.map((route) => (
+                      <div
+                        key={`${route.pickupDistrictId}-${route.deliveryDistrictId}`}
+                        className="inline-flex h-6 items-center gap-1 rounded-full border border-border pr-1 pl-2.5 text-xs"
+                      >
+                        <button
+                          type="button"
+                          className="font-medium hover:text-primary dark:hover:text-ring"
+                          onClick={() => {
+                            setPickupDistrictId(route.pickupDistrictId);
+                            setDeliveryDistrictId(route.deliveryDistrictId);
+                          }}
+                        >
+                          {districtName(route.pickupDistrictId)} → {districtName(route.deliveryDistrictId)}
+                        </button>
+                        <button
+                          type="button"
+                          aria-label={t.removeRouteLabel}
+                          title={t.removeRouteLabel}
+                          className="rounded-full p-0.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+                          onClick={() =>
+                            removeSavedRoute(route.pickupDistrictId, route.deliveryDistrictId)
+                          }
+                        >
+                          <X className="size-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div data-tour="parcel" className="grid grid-cols-2 gap-2.5 p-3 sm:p-3.5">
