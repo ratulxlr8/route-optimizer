@@ -1,19 +1,20 @@
-import type { Metadata } from "next";
-
 import { MarketingFooter } from "@/components/marketing-footer";
 import { MarketingNav } from "@/components/marketing-nav";
-import { SITE_NAME } from "@/lib/site";
+import { breadcrumbJsonLd, pageMetadata, SITE_NAME } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "About",
   description:
     "How FleetSplit sources its Pathao, RedX, CarryBee, and Steadfast rate data, and why it's built as a free, client-side-only calculator.",
-  alternates: { canonical: "/about" },
-};
+  path: "/about",
+});
+
+const breadcrumbs = breadcrumbJsonLd([{ name: "About", path: "/about" }]);
 
 export default function AboutPage() {
   return (
     <div className="app-canvas flex min-h-full flex-col">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }} />
       <MarketingNav />
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-4 py-10 text-sm leading-relaxed text-muted-foreground sm:px-6">
         <div>

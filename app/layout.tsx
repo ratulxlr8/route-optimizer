@@ -6,7 +6,7 @@ import "./globals.css";
 import { ServiceWorkerRegister } from "@/components/sw-register";
 import { StructuredData } from "@/components/structured-data";
 import { ThemeProvider } from "@/components/theme-provider";
-import { SITE_DESCRIPTION_EN, SITE_NAME, SITE_URL } from "@/lib/site";
+import { SITE_DESCRIPTION_META, SITE_NAME, SITE_URL } from "@/lib/site";
 
 // Inter is DESIGN.md's documented open-source stand-in for SF Pro. It carries
 // Latin only — Bengali glyphs come from Noto Serif Bengali via the composed
@@ -39,10 +39,12 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} — Courier Charge Calculator for Pathao, RedX, CarryBee & Steadfast`,
+    // Kept under ~60 characters — Google truncates longer <title> tags in
+    // search results, and the previous version (77 chars) ran past that.
+    default: `${SITE_NAME} — Compare Pathao, RedX, CarryBee & Steadfast Rates`,
     template: `%s | ${SITE_NAME}`,
   },
-  description: SITE_DESCRIPTION_EN,
+  description: SITE_DESCRIPTION_META,
   applicationName: SITE_NAME,
   // Bengali-script/phonetic variants live in visible FAQ copy and JSON-LD,
   // not stuffed here — but a handful of engines/site-search tools still read
@@ -71,14 +73,14 @@ export const metadata: Metadata = {
     url: "/",
     siteName: SITE_NAME,
     title: `${SITE_NAME} — Courier Charge Calculator for Bangladesh`,
-    description: SITE_DESCRIPTION_EN,
+    description: SITE_DESCRIPTION_META,
     locale: "en_US",
     alternateLocale: "bn_BD",
   },
   twitter: {
     card: "summary_large_image",
     title: `${SITE_NAME} — Courier Charge Calculator for Bangladesh`,
-    description: SITE_DESCRIPTION_EN,
+    description: SITE_DESCRIPTION_META,
   },
   robots: {
     index: true,

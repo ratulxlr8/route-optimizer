@@ -1,18 +1,18 @@
-import type { Metadata } from "next";
-
 import { CourierLanding } from "@/components/courier-landing";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Pathao Delivery Charge Calculator",
   description:
     "Calculate Pathao Courier delivery charges for Same City, Sub-City, Inter-City, and Outside City routes by weight — free, instant, no sign-up.",
-  alternates: { canonical: "/pathao-delivery-charge-calculator" },
-};
+  path: "/pathao-delivery-charge-calculator",
+});
 
 export default function PathaoPage() {
   return (
     <CourierLanding
       courierName="Pathao"
+      path="/pathao-delivery-charge-calculator"
       tagline="Pathao Courier's real weight-tier and zone rates, explained."
       intro="Pathao doesn't price by distance — it resolves a route into one of four zones based on whether the pickup and delivery cities sit inside Dhaka's metro group (Dhaka, Narayanganj, Gazipur), then charges a flat base fare by weight bucket plus a per-kg surcharge above 2kg."
       rateRows={[

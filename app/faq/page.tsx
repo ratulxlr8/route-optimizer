@@ -1,15 +1,13 @@
-import type { Metadata } from "next";
-
 import { MarketingFooter } from "@/components/marketing-footer";
 import { MarketingNav } from "@/components/marketing-nav";
-import { NAME_VARIANTS, SITE_NAME } from "@/lib/site";
+import { breadcrumbJsonLd, NAME_VARIANTS, pageMetadata, SITE_NAME } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "FAQ — Courier Charge Calculator Questions",
   description:
     "Common questions about FleetSplit: which couriers it compares, whether it's free, how the rates are sourced, and how bulk order auto-splitting works.",
-  alternates: { canonical: "/faq" },
-};
+  path: "/faq",
+});
 
 const FAQ_ITEMS: Array<{ question: string; answer: string }> = [
   {
@@ -69,9 +67,12 @@ export default function FaqPage() {
     })),
   };
 
+  const breadcrumbs = breadcrumbJsonLd([{ name: "FAQ", path: "/faq" }]);
+
   return (
     <div className="app-canvas flex min-h-full flex-col">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }} />
       <MarketingNav />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-10 sm:px-6">
         <h1 className="text-2xl font-semibold tracking-tight">Frequently asked questions</h1>

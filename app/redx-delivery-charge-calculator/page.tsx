@@ -1,18 +1,18 @@
-import type { Metadata } from "next";
-
 import { CourierLanding } from "@/components/courier-landing";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "RedX Delivery Charge Calculator",
   description:
     "Calculate RedX delivery charges for Inside City, Dhaka Suburb, and Outside Dhaka routes by weight, including COD fee — free, instant, no sign-up.",
-  alternates: { canonical: "/redx-delivery-charge-calculator" },
-};
+  path: "/redx-delivery-charge-calculator",
+});
 
 export default function RedxPage() {
   return (
     <CourierLanding
       courierName="RedX"
+      path="/redx-delivery-charge-calculator"
       tagline="RedX's real inside-city, suburb, and outside-Dhaka rates, explained."
       intro="RedX classifies every delivery into one of three tiers — inside the same city, the Dhaka-adjacent suburb belt (Gazipur, Narayanganj, Munshiganj), or outside Dhaka entirely — then bills a flat base for the first kg plus a per-kg rate above it. Weight rounds up to the next whole kg up to 5kg; above 5kg the exact fractional weight is billed instead."
       rateRows={[

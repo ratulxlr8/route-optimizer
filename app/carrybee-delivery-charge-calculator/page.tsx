@@ -1,18 +1,18 @@
-import type { Metadata } from "next";
-
 import { CourierLanding } from "@/components/courier-landing";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "CarryBee Delivery Charge Calculator",
   description:
     "Calculate CarryBee delivery charges for same-city, Dhaka-suburb, and cross-district routes by weight — free, instant, no sign-up.",
-  alternates: { canonical: "/carrybee-delivery-charge-calculator" },
-};
+  path: "/carrybee-delivery-charge-calculator",
+});
 
 export default function CarryBeePage() {
   return (
     <CourierLanding
       courierName="CarryBee"
+      path="/carrybee-delivery-charge-calculator"
       tagline="CarryBee's real zone and weight-bucket rates, explained."
       intro="CarryBee bills in fine weight buckets up to 3kg (every 0.2–0.5kg step has its own flat price), then switches to a flat 4kg rate plus a per-kg surcharge above that. Its zone logic treats Gazipur and Narayanganj as Dhaka's suburb — every other district is priced as a full outside-Dhaka route."
       rateRows={[

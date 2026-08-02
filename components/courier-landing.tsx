@@ -3,7 +3,7 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { MarketingFooter } from "@/components/marketing-footer";
 import { MarketingNav } from "@/components/marketing-nav";
-import { SITE_NAME } from "@/lib/site";
+import { breadcrumbJsonLd, SITE_NAME } from "@/lib/site";
 
 interface RateRow {
   zone: string;
@@ -17,6 +17,9 @@ interface CourierLandingProps {
    *  (Steadfast's page/title/slug all say "courier", the other three say
    *  "delivery"). */
   headingSuffix?: string;
+  /** The page's own canonical path (e.g. "/pathao-delivery-charge-calculator"),
+   *  for the BreadcrumbList JSON-LD below. */
+  path: string;
   tagline: string;
   intro: string;
   rateRows: RateRow[];
@@ -36,6 +39,7 @@ interface CourierLandingProps {
 export function CourierLanding({
   courierName,
   headingSuffix = "delivery charge calculator",
+  path,
   tagline,
   intro,
   rateRows,
@@ -54,10 +58,12 @@ export function CourierLanding({
       },
     ],
   };
+  const breadcrumbs = breadcrumbJsonLd([{ name: `${courierName} ${headingSuffix}`, path }]);
 
   return (
     <div className="app-canvas flex min-h-full flex-col">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }} />
       <MarketingNav />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-10 sm:px-6">
         <h1 className="text-2xl font-semibold tracking-tight">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import dynamic from "next/dynamic";
 import { ArrowRight, Boxes, Package } from "lucide-react";
 
@@ -493,6 +494,62 @@ export default function Home() {
             <BulkUpload />
           </TabsPanel>
         </Tabs>
+
+        {/* Below-the-fold SEO/AEO content. The calculator above is a widget
+            with almost no indexable text of its own — this is the page's
+            actual keyword-rich, crawlable copy, and it's real content a
+            visitor would read, not filler wrapped around a keyword. */}
+        <section className="mt-10 border-t border-border pt-8 sm:mt-12 sm:pt-10">
+          <div className="max-w-2xl">
+            <h2 className="text-lg font-semibold tracking-tight">{t.seoTitle}</h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t.seoIntro}</p>
+
+            <h3 className="mt-8 text-sm font-medium">{t.seoHowTitle}</h3>
+            <ol className="mt-3 flex flex-col gap-2 text-sm text-muted-foreground">
+              <li>
+                <span className="numeric mr-2 text-foreground">1.</span>
+                {t.seoStep1}
+              </li>
+              <li>
+                <span className="numeric mr-2 text-foreground">2.</span>
+                {t.seoStep2}
+              </li>
+              <li>
+                <span className="numeric mr-2 text-foreground">3.</span>
+                {t.seoStep3}
+              </li>
+            </ol>
+
+            <h3 className="mt-8 text-sm font-medium">{t.seoLinksTitle}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">{t.seoLinksIntro}</p>
+            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-sm">
+              <Link
+                href="/pathao-delivery-charge-calculator"
+                className="text-primary underline-offset-4 hover:underline dark:text-ring"
+              >
+                Pathao delivery charge calculator
+              </Link>
+              <Link
+                href="/redx-delivery-charge-calculator"
+                className="text-primary underline-offset-4 hover:underline dark:text-ring"
+              >
+                RedX delivery charge calculator
+              </Link>
+              <Link
+                href="/steadfast-courier-charge-calculator"
+                className="text-primary underline-offset-4 hover:underline dark:text-ring"
+              >
+                Steadfast courier charge calculator
+              </Link>
+              <Link
+                href="/carrybee-delivery-charge-calculator"
+                className="text-primary underline-offset-4 hover:underline dark:text-ring"
+              >
+                CarryBee delivery charge calculator
+              </Link>
+            </div>
+          </div>
+        </section>
       </main>
 
       <ProductTour

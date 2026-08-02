@@ -1,19 +1,19 @@
-import type { Metadata } from "next";
-
 import { CourierLanding } from "@/components/courier-landing";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Steadfast Courier Charge Calculator",
   description:
     "Calculate Steadfast Courier delivery charges for same-district-Dhaka, Dhaka-to-Sub-Urban, and cross-district routes by weight — free, instant, no sign-up.",
-  alternates: { canonical: "/steadfast-courier-charge-calculator" },
-};
+  path: "/steadfast-courier-charge-calculator",
+});
 
 export default function SteadfastPage() {
   return (
     <CourierLanding
       courierName="Steadfast"
       headingSuffix="courier charge calculator"
+      path="/steadfast-courier-charge-calculator"
       tagline="Steadfast's real district-pair rates, explained."
       intro="Steadfast prices real district-to-district routes rather than a handful of broad zones, and Dhaka City-to-Dhaka City routes get extra fine-grained weight tiers (150g and 500g) that no other route qualifies for. Every other route bills in whole-kg steps."
       rateRows={[
