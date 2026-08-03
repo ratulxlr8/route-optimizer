@@ -5,7 +5,7 @@ import { breadcrumbJsonLd, pageMetadata, SITE_NAME } from "@/lib/site";
 export const metadata = pageMetadata({
   title: "About",
   description:
-    "How FleetSplit sources its Pathao, RedX, CarryBee, and Steadfast rate data, and why it's built as a free, client-side-only calculator.",
+    "How FleetSplit sources its Pathao, RedX, CarryBee, Steadfast, and Paperfly rate data, and why it's built as a free, client-side-only calculator.",
   path: "/about",
 });
 
@@ -20,7 +20,7 @@ export default function AboutPage() {
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">About {SITE_NAME}</h1>
           <p className="mt-3">
-            Bangladeshi e-commerce and F-commerce sellers routinely juggle four different courier apps just to find
+            Bangladeshi e-commerce and F-commerce sellers routinely juggle five different courier apps just to find
             out which one is cheapest for a single delivery — and with dozens or hundreds of orders a day, doing that
             by hand isn&apos;t realistic. {SITE_NAME} exists to answer one question instantly: for this specific
             pickup zone, delivery zone, weight, and price, which courier actually costs the least?
@@ -31,9 +31,9 @@ export default function AboutPage() {
           <h2 className="text-base font-medium text-foreground">Where the rates come from</h2>
           <p className="mt-2">
             Every rate table in {SITE_NAME} — Pathao&apos;s metro-zone and weight-tier logic, RedX&apos;s route
-            classification and weight-rounding rule, CarryBee&apos;s zone and weight-bucket rates, and
-            Steadfast&apos;s district-pair pricing — is reverse-engineered directly from that courier&apos;s own live
-            rate calculator, not estimated from published brochures. They are static snapshots rather than a live
+            classification and weight-rounding rule, CarryBee&apos;s zone and weight-bucket rates, Steadfast&apos;s
+            district-pair pricing, and Paperfly&apos;s zone-based rates — is reverse-engineered directly from that
+            courier&apos;s own live rate calculator or published rate card, not estimated. They are static snapshots rather than a live
             integration, so a courier revising its rates won&apos;t be reflected until this app is updated; always
             confirm the final charge with the courier before dispatch.
           </p>
@@ -52,7 +52,7 @@ export default function AboutPage() {
           <h2 className="text-base font-medium text-foreground">Independent, not affiliated</h2>
           <p className="mt-2">
             {SITE_NAME} is an independent comparison tool and is not affiliated with, endorsed by, or operated by
-            Pathao, RedX, CarryBee, or Steadfast. All trademarks belong to their respective owners.
+            Pathao, RedX, CarryBee, Steadfast, or Paperfly. All trademarks belong to their respective owners.
           </p>
         </div>
       </main>

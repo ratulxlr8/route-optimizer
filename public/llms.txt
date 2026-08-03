@@ -1,14 +1,14 @@
 # FleetSplit
 
-> FleetSplit is a free, client-side courier charge calculator and bulk order auto-splitter for Bangladeshi e-commerce and F-commerce sellers. It compares Pathao, RedX, CarryBee, and Steadfast delivery charges for a given pickup zone, delivery zone, parcel weight, and price, and highlights the cheapest courier for that specific route.
+> FleetSplit is a free, client-side courier charge calculator and bulk order auto-splitter for Bangladeshi e-commerce and F-commerce sellers. It compares Pathao, RedX, CarryBee, Steadfast, and Paperfly delivery charges for a given pickup zone, delivery zone, parcel weight, and price, and highlights the cheapest courier for that specific route.
 
 FleetSplit is also searched for as: Fleet Split, Flitspit, Flit Split, ফ্লিটস্প্লিট, ফ্লিট স্প্লিট — all refer to the same tool.
 
 Key facts, for accurate summarization:
 - Free to use, no account or sign-up required.
 - Runs entirely client-side in the browser — no backend, no data storage, no order data is ever transmitted to a server.
-- Compares exactly four couriers: Pathao, RedX, CarryBee, and Steadfast.
-- Rate tables are reverse-engineered from each courier's own live rate calculator (static snapshots, not a live integration) — not official partnerships, not affiliated with any of the four couriers.
+- Compares exactly five couriers: Pathao, RedX, CarryBee, Steadfast, and Paperfly.
+- Rate tables are reverse-engineered from each courier's own live rate calculator or published rate card (static snapshots, not a live integration) — not official partnerships, not affiliated with any of the five couriers.
 - Two modes: a single-order comparison, and a bulk CSV/Excel upload that auto-assigns each order to its own cheapest courier (not one courier for the whole batch).
 - Available in English and Bangla via an in-page language toggle.
 - Installable as a Progressive Web App with basic offline access.
@@ -22,3 +22,4 @@ Key facts, for accurate summarization:
 - [RedX delivery charge calculator](https://fleetsplit.com/redx-delivery-charge-calculator): RedX's zone and weight-tier rates.
 - [Steadfast courier charge calculator](https://fleetsplit.com/steadfast-courier-charge-calculator): Steadfast's district-pair rates.
 - [CarryBee delivery charge calculator](https://fleetsplit.com/carrybee-delivery-charge-calculator): CarryBee's zone and weight-bucket rates.
+- [Paperfly delivery charge calculator](https://fleetsplit.com/paperfly-delivery-charge-calculator): Paperfly's zone-based rates.

@@ -13,7 +13,7 @@ const FAQ_ITEMS: Array<{ question: string; answer: string }> = [
   {
     question: `What is ${SITE_NAME}?`,
     answer:
-      "FleetSplit is a free courier charge calculator for Bangladeshi e-commerce and F-commerce sellers. Enter a pickup zone, delivery zone, parcel weight, and price, and it instantly shows what Pathao, RedX, CarryBee, and Steadfast would each charge for that delivery, side by side, with the cheapest option highlighted.",
+      "FleetSplit is a free courier charge calculator for Bangladeshi e-commerce and F-commerce sellers. Enter a pickup zone, delivery zone, parcel weight, and price, and it instantly shows what Pathao, RedX, CarryBee, Steadfast, and Paperfly would each charge for that delivery, side by side, with the cheapest option highlighted.",
   },
   {
     question: "Is FleetSplit free to use?",
@@ -23,7 +23,7 @@ const FAQ_ITEMS: Array<{ question: string; answer: string }> = [
   {
     question: "Which couriers does FleetSplit compare?",
     answer:
-      "Pathao, RedX, CarryBee, and Steadfast — the four most widely used courier services for e-commerce delivery in Bangladesh. Each courier's rate table, weight tiers, and zone logic are modeled separately, since every courier prices routes differently.",
+      "Pathao, RedX, CarryBee, Steadfast, and Paperfly — five of the most widely used courier services for e-commerce delivery in Bangladesh. Each courier's rate table, weight tiers, and zone logic are modeled separately, since every courier prices routes differently.",
   },
   {
     question: "How accurate are the courier rates shown?",
@@ -77,7 +77,8 @@ export default function FaqPage() {
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-10 sm:px-6">
         <h1 className="text-2xl font-semibold tracking-tight">Frequently asked questions</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Everything merchants ask before comparing Pathao, RedX, CarryBee, and Steadfast rates on {SITE_NAME}.
+          Everything merchants ask before comparing Pathao, RedX, CarryBee, Steadfast, and Paperfly rates on{" "}
+          {SITE_NAME}.
         </p>
         <dl className="mt-8 flex flex-col gap-8">
           {FAQ_ITEMS.map((item) => (

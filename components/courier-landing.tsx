@@ -10,6 +10,18 @@ interface RateRow {
   rate: string;
 }
 
+// Every courier this app compares — used only to build the "compare against
+// the others" cross-sell blurb below, so it stays a plain display-name list
+// rather than importing the pricing engine's `CourierName` type.
+const ALL_COURIERS = ["Pathao", "RedX", "CarryBee", "Steadfast", "Paperfly"];
+
+/** Oxford-comma "A, B, and C" join — "A and B" for exactly two, just "A" for one. */
+function joinWithAnd(items: string[]): string {
+  if (items.length <= 1) return items[0] ?? "";
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
+}
+
 interface CourierLandingProps {
   courierName: string;
   /** e.g. "delivery charge calculator" or "courier charge calculator" — kept
@@ -59,6 +71,7 @@ export function CourierLanding({
     ],
   };
   const breadcrumbs = breadcrumbJsonLd([{ name: `${courierName} ${headingSuffix}`, path }]);
+  const otherCouriers = ALL_COURIERS.filter((name) => name !== courierName);
 
   return (
     <div className="app-canvas flex min-h-full flex-col">
@@ -99,11 +112,11 @@ export function CourierLanding({
 
         <div className="mt-10 flex flex-col items-start gap-3 rounded-lg border border-border bg-card p-6">
           <h2 className="text-base font-medium">
-            Compare {courierName} against Pathao, RedX, CarryBee, and Steadfast in one place
+            Compare {courierName} against {joinWithAnd(otherCouriers)} in one place
           </h2>
           <p className="text-sm text-muted-foreground">
-            {SITE_NAME} runs all four calculators at once and highlights the cheapest option for your exact route and
-            weight — free, no sign-up.
+            {SITE_NAME} runs all {ALL_COURIERS.length} calculators at once and highlights the cheapest option for
+            your exact route and weight — free, no sign-up.
           </p>
           <Link href="/" className={buttonVariants({ variant: "default" })}>
             Open the full calculator

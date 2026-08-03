@@ -22,7 +22,7 @@ export const NAME_VARIANTS = [
 ] as const;
 
 export const SITE_DESCRIPTION_EN =
-  "Compare Pathao, RedX, CarryBee, and Steadfast courier charges instantly and auto-split bulk orders to the cheapest courier for every delivery — free, no sign-up, built for Bangladeshi e-commerce and F-commerce sellers.";
+  "Compare Pathao, RedX, CarryBee, Steadfast, and Paperfly courier charges instantly and auto-split bulk orders to the cheapest courier for every delivery — free, no sign-up, built for Bangladeshi e-commerce and F-commerce sellers.";
 
 // Google truncates <meta name="description"> at roughly 155-160 characters,
 // so SITE_DESCRIPTION_EN (written for JSON-LD and the About page, where
@@ -30,7 +30,7 @@ export const SITE_DESCRIPTION_EN =
 // in search results. This shorter variant is what actually goes in
 // <meta name="description">, openGraph.description, and twitter.description.
 export const SITE_DESCRIPTION_META =
-  "Compare Pathao, RedX, CarryBee, and Steadfast courier charges instantly and auto-split bulk orders to the cheapest one — free, no sign-up.";
+  "Compare Pathao, RedX, CarryBee, Steadfast & Paperfly courier charges instantly and auto-split bulk orders to the cheapest one — free, no sign-up.";
 
 export const SITE_TAGLINE_EN = "Smart courier charge calculator & auto-splitter for Bangladesh";
 

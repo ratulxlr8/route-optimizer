@@ -35,7 +35,7 @@ export function StructuredData() {
         name: "Bangladesh",
       },
       featureList: [
-        "Single-order courier rate comparison across Pathao, RedX, CarryBee, and Steadfast",
+        "Single-order courier rate comparison across Pathao, RedX, CarryBee, Steadfast, and Paperfly",
         "Bulk CSV/Excel order upload with automatic cheapest-courier splitting",
         "Bangla and English interface",
       ],

@@ -21,6 +21,7 @@ const ROUTES: Array<{
   { path: "/redx-delivery-charge-calculator", priority: 0.8, changeFrequency: "monthly", lastModified: "2026-08-02" },
   { path: "/steadfast-courier-charge-calculator", priority: 0.8, changeFrequency: "monthly", lastModified: "2026-08-02" },
   { path: "/carrybee-delivery-charge-calculator", priority: 0.8, changeFrequency: "monthly", lastModified: "2026-08-02" },
+  { path: "/paperfly-delivery-charge-calculator", priority: 0.8, changeFrequency: "monthly", lastModified: "2026-08-03" },
   { path: "/faq", priority: 0.7, changeFrequency: "monthly", lastModified: "2026-08-02" },
   { path: "/about", priority: 0.5, changeFrequency: "yearly", lastModified: "2026-07-30" },
 ];

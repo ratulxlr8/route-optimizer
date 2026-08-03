@@ -13,7 +13,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: `${SITE_NAME} — Courier Charge Calculator`,
     short_name: SITE_NAME,
     description:
-      "Compare Pathao, RedX, CarryBee, and Steadfast courier charges instantly and auto-split bulk orders to the cheapest courier.",
+      "Compare Pathao, RedX, CarryBee, Steadfast, and Paperfly courier charges instantly and auto-split bulk orders to the cheapest courier.",
     start_url: "/",
     display: "standalone",
     background_color: "#f5f5f7",

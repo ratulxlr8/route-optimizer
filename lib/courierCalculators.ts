@@ -18,6 +18,11 @@ import {
 } from "@/lib/carrybeePricing";
 import { DHAKA_SUBURB_PSEUDO_ID, getDistrictName } from "@/lib/districts";
 import {
+  PAPERFLY_MAX_WEIGHT_KG,
+  type PaperflyZone,
+  calculatePaperflyCharges,
+} from "@/lib/paperflyPricing";
+import {
   PATHAO_DHAKA,
   PATHAO_GAZIPUR,
   type PathaoZone,
@@ -56,13 +61,14 @@ export interface CalculatorInput {
   deliveryDistrictId: number;
 }
 
-export type CourierName = "Pathao" | "RedX" | "CarryBee" | "Steadfast";
+export type CourierName = "Pathao" | "RedX" | "CarryBee" | "Steadfast" | "Paperfly";
 
 export const COURIER_DOT: Record<CourierName, string> = {
   Pathao: "bg-red-500",
   RedX: "bg-orange-500",
   CarryBee: "bg-amber-500",
   Steadfast: "bg-blue-500",
+  Paperfly: "bg-purple-500",
 };
 
 /** Per-courier fill for the price-comparison bars — same brand hues as
@@ -72,6 +78,7 @@ export const COURIER_BAR: Record<CourierName, string> = {
   RedX: "bg-orange-500/55",
   CarryBee: "bg-amber-500/55",
   Steadfast: "bg-blue-500/55",
+  Paperfly: "bg-purple-500/55",
 };
 
 export interface CourierResult {
@@ -325,6 +332,62 @@ export function calculateSteadfast(input: CalculatorInput): CourierResult {
 }
 
 // ---------------------------------------------------------------------------
+// Paperfly
+// ---------------------------------------------------------------------------
+
+// Reverse-engineered from Paperfly's own published rate card (not an
+// estimate — see lib/paperflyPricing.ts for provenance and the zone-mapping
+// caveat it documents). Unlike the other four, Paperfly's "Same City" zone
+// isn't Dhaka-specific — it's whichever district the parcel *stays within*,
+// so the same-district check alone (no Dhaka special-case) is exact; only
+// its Periphery zone needs the approximation.
+function paperflyZoneFor(pickupId: number, deliveryId: number): PaperflyZone {
+  if (pickupId === deliveryId) return "SAME_CITY";
+  if (pickupId === CANONICAL_DISTRICT.DHAKA && SUBURB_DISTRICT_IDS.has(deliveryId)) {
+    return "PERIPHERY";
+  }
+  return "REST_OF_BD";
+}
+
+function paperflyZoneLabel(
+  zone: PaperflyZone,
+  canonicalPickupId: number,
+  canonicalDeliveryId: number,
+): string {
+  if (zone === "SAME_CITY") {
+    return canonicalPickupId === CANONICAL_DISTRICT.DHAKA
+      ? "Same City Dhaka"
+      : `Same City ${getDistrictName(canonicalPickupId)}`;
+  }
+  if (zone === "PERIPHERY") {
+    return `${getDistrictName(canonicalPickupId)} to ${getDistrictName(canonicalDeliveryId)} (Periphery)`;
+  }
+  return `${getDistrictName(canonicalPickupId)} to ${getDistrictName(canonicalDeliveryId)}`;
+}
+
+export function calculatePaperfly(input: CalculatorInput): CourierResult {
+  const zone = paperflyZoneFor(input.pickupDistrictId, input.deliveryDistrictId);
+  const { base, overage, codCharge: realCodCharge, slabNote } = calculatePaperflyCharges({
+    zone,
+    weightKg: input.weightKg,
+    price: input.productPrice,
+  });
+  const codCharge = input.isCOD ? realCodCharge : 0;
+  const overweightNote =
+    input.weightKg > PAPERFLY_MAX_WEIGHT_KG ? ` (exceeds Paperfly's ${PAPERFLY_MAX_WEIGHT_KG}kg limit)` : "";
+
+  return {
+    courier: "Paperfly",
+    zoneLabel: paperflyZoneLabel(zone, input.pickupDistrictId, input.deliveryDistrictId),
+    baseCharge: base,
+    overageCharge: overage,
+    codCharge,
+    totalCharge: round(base + overage + codCharge),
+    slabNote: slabNote + overweightNote,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Aggregate helper used by the dashboard.
 // ---------------------------------------------------------------------------
 
@@ -334,6 +397,7 @@ export function getAllQuotes(input: CalculatorInput): CourierResult[] {
     calculateRedX(input),
     calculateCarryBee(input),
     calculateSteadfast(input),
+    calculatePaperfly(input),
   ].sort(
     (a, b) => a.totalCharge - b.totalCharge,
   );

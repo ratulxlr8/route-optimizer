@@ -40,8 +40,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     // Kept under ~60 characters — Google truncates longer <title> tags in
-    // search results, and the previous version (77 chars) ran past that.
-    default: `${SITE_NAME} — Compare Pathao, RedX, CarryBee & Steadfast Rates`,
+    // search results. Named all four couriers until Paperfly became the
+    // fifth, at which point spelling every name out no longer fit; this
+    // phrasing scales without needing another edit if a sixth is added.
+    default: `${SITE_NAME} — Compare 5 Bangladesh Courier Rates`,
     template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION_META,
@@ -55,6 +57,7 @@ export const metadata: Metadata = {
     "RedX delivery charge calculator",
     "Steadfast courier charge calculator",
     "CarryBee delivery charge calculator",
+    "Paperfly delivery charge calculator",
     "courier price comparison Bangladesh",
     "bulk order courier auto splitter",
     "FleetSplit",

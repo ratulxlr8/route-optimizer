@@ -19,10 +19,13 @@ export function MarketingFooter() {
           <Link href="/carrybee-delivery-charge-calculator" className="hover:text-foreground">
             CarryBee charge calculator
           </Link>
+          <Link href="/paperfly-delivery-charge-calculator" className="hover:text-foreground">
+            Paperfly charge calculator
+          </Link>
         </div>
         <p>
           © {new Date().getFullYear()} {SITE_NAME}. Independent price comparison tool — not affiliated with Pathao,
-          RedX, CarryBee, or Steadfast.
+          RedX, CarryBee, Steadfast, or Paperfly.
         </p>
       </div>
     </footer>

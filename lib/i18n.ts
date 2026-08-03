@@ -184,12 +184,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
     tourStepOf: (step, total) => `${step} of ${total}`,
     seoTitle: "The fastest way to compare courier rates in Bangladesh",
     seoIntro:
-      "FleetSplit compares Pathao, RedX, CarryBee, and Steadfast delivery charges for any pickup-to-delivery route in Bangladesh, using rates reverse-engineered from each courier's own live calculator — not estimates. Enter a route, weight, and price above to see every courier's total charge ranked side by side, including COD fees, instantly and for free.",
+      "FleetSplit compares Pathao, RedX, CarryBee, Steadfast, and Paperfly delivery charges for any pickup-to-delivery route in Bangladesh, using rates reverse-engineered from each courier's own live calculator or published rate card — not estimates. Enter a route, weight, and price above to see every courier's total charge ranked side by side, including COD fees, instantly and for free.",
     seoHowTitle: "How the comparison works",
     seoStep1: "Choose a pickup and delivery district from all 64 districts of Bangladesh.",
     seoStep2: "Enter the parcel's weight and price, and turn on Cash on Delivery if it applies.",
     seoStep3:
-      "FleetSplit ranks Pathao, RedX, CarryBee, and Steadfast by total charge — cheapest first.",
+      "FleetSplit ranks Pathao, RedX, CarryBee, Steadfast, and Paperfly by total charge — cheapest first.",
     seoLinksTitle: "Courier rate details",
     seoLinksIntro: "See the full rate table and zone logic for each courier:",
     saveRouteLabel: "Save this route",
@@ -281,12 +281,12 @@ export const dictionaries: Record<Lang, Dictionary> = {
     tourStepOf: (step, total) => `${total}-এর মধ্যে ${step}`,
     seoTitle: "বাংলাদেশে কুরিয়ার রেট তুলনা করার সবচেয়ে দ্রুত উপায়",
     seoIntro:
-      "FleetSplit বাংলাদেশের যেকোনো পিকআপ-থেকে-ডেলিভারি রুটের জন্য Pathao, RedX, CarryBee এবং Steadfast-এর ডেলিভারি চার্জ তুলনা করে — প্রতিটি কুরিয়ারের নিজস্ব লাইভ ক্যালকুলেটর থেকে রিভার্স-ইঞ্জিনিয়ার করা রেট ব্যবহার করে, অনুমান নয়। উপরে একটি রুট, ওজন ও মূল্য দিন — সাথে সাথেই COD ফিসহ প্রতিটি কুরিয়ারের সর্বমোট চার্জ সাশ্রয়ী থেকে ব্যয়বহুল ক্রমে দেখতে পাবেন, সম্পূর্ণ বিনামূল্যে।",
+      "FleetSplit বাংলাদেশের যেকোনো পিকআপ-থেকে-ডেলিভারি রুটের জন্য Pathao, RedX, CarryBee, Steadfast এবং Paperfly-এর ডেলিভারি চার্জ তুলনা করে — প্রতিটি কুরিয়ারের নিজস্ব লাইভ ক্যালকুলেটর বা প্রকাশিত রেট কার্ড থেকে রিভার্স-ইঞ্জিনিয়ার করা রেট ব্যবহার করে, অনুমান নয়। উপরে একটি রুট, ওজন ও মূল্য দিন — সাথে সাথেই COD ফিসহ প্রতিটি কুরিয়ারের সর্বমোট চার্জ সাশ্রয়ী থেকে ব্যয়বহুল ক্রমে দেখতে পাবেন, সম্পূর্ণ বিনামূল্যে।",
     seoHowTitle: "যেভাবে তুলনা করা হয়",
     seoStep1: "বাংলাদেশের ৬৪টি জেলার মধ্য থেকে পিকআপ ও ডেলিভারি জেলা বেছে নিন।",
     seoStep2: "পার্সেলের ওজন ও মূল্য লিখুন, এবং COD অর্ডার হলে ক্যাশ অন ডেলিভারি চালু করুন।",
     seoStep3:
-      "FleetSplit সর্বমোট চার্জ অনুযায়ী Pathao, RedX, CarryBee এবং Steadfast-কে র‍্যাঙ্ক করে — সবচেয়ে সাশ্রয়ীটি সবার আগে।",
+      "FleetSplit সর্বমোট চার্জ অনুযায়ী Pathao, RedX, CarryBee, Steadfast এবং Paperfly-কে র‍্যাঙ্ক করে — সবচেয়ে সাশ্রয়ীটি সবার আগে।",
     seoLinksTitle: "কুরিয়ারভিত্তিক রেট বিস্তারিত",
     seoLinksIntro: "প্রতিটি কুরিয়ারের সম্পূর্ণ রেট টেবিল ও জোন লজিক দেখুন:",
     saveRouteLabel: "এই রুট সংরক্ষণ করুন",

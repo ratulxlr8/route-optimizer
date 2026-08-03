@@ -620,6 +620,12 @@ export default function Home() {
               >
                 CarryBee delivery charge calculator
               </Link>
+              <Link
+                href="/paperfly-delivery-charge-calculator"
+                className="text-primary underline-offset-4 hover:underline dark:text-ring"
+              >
+                Paperfly delivery charge calculator
+              </Link>
             </div>
           </div>
         </section>
