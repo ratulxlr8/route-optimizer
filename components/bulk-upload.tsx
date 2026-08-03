@@ -3,6 +3,7 @@
 import { useCallback, useRef, useState } from "react";
 import {
   AlertTriangle,
+  Bike,
   Download,
   FileSpreadsheet,
   Trash2,
@@ -39,9 +40,10 @@ import {
   parseBulkOrdersXlsx,
   summarizeBulkResults,
 } from "@/lib/bulkOrders";
-import { COURIER_DOT } from "@/lib/courierCalculators";
+import { COURIER_ICON_COLOR } from "@/lib/courierCalculators";
 import { useLanguage } from "@/lib/language-store";
 import { addLifetimeSavings } from "@/lib/savings-store";
+import { useCountUp } from "@/lib/use-count-up";
 import { cn, formatBDT } from "@/lib/utils";
 
 function downloadBlob(filename: string, blob: Blob) {
@@ -93,6 +95,11 @@ export function BulkUpload() {
   }, []);
 
   const summary = summarizeBulkResults(results);
+  // Tweened, not snapped — each new batch's totals visibly count up from the
+  // previous batch's (or from 0) rather than jumping straight to the figure.
+  const animatedOrders = useCountUp(summary.totalOrders);
+  const animatedAutoSplitTotal = useCountUp(summary.autoSplitTotal);
+  const animatedSavings = useCountUp(summary.savings);
 
   const reset = () => {
     setFileName(null);
@@ -264,12 +271,12 @@ export function BulkUpload() {
           <div className="elevate animate-in fade-in fill-mode-both grid grid-cols-1 divide-y divide-border overflow-hidden rounded-md border border-border bg-card duration-300 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             <div className="p-3">
               <div className="micro text-muted-foreground">{t.ordersProcessed}</div>
-              <div className="numeric mt-1.5 text-2xl">{summary.totalOrders}</div>
+              <div className="numeric mt-1.5 text-2xl">{Math.round(animatedOrders)}</div>
             </div>
             <div className="p-3">
               <div className="micro text-muted-foreground">{t.autoSplitTotal}</div>
               <div className="numeric mt-1.5 text-2xl">
-                {formatBDT(summary.autoSplitTotal)}
+                {formatBDT(Math.round(animatedAutoSplitTotal))}
               </div>
             </div>
             <div className="bg-hero p-3 text-white">
@@ -278,7 +285,7 @@ export function BulkUpload() {
                   t.savingsVsAll(summary.bestSingleCourier.courier)}
               </div>
               <div className="numeric mt-1.5 text-2xl">
-                {formatBDT(summary.savings)}
+                {formatBDT(Math.round(animatedSavings))}
                 {summary.savingsPct > 0 && (
                   <span className="ml-1 text-sm text-white/60">
                     ({summary.savingsPct.toFixed(0)}%)
@@ -341,9 +348,7 @@ export function BulkUpload() {
             <CardContent className="flex flex-wrap gap-2">
               {summary.perCourierTotals.map((entry) => (
                 <Badge key={entry.courier} variant="outline" className="gap-1.5 py-1">
-                  <span
-                    className={`size-2 rounded-full ${COURIER_DOT[entry.courier]}`}
-                  />
+                  <Bike className={`size-3 ${COURIER_ICON_COLOR[entry.courier]}`} />
                   {t.courierSplitSummary(entry.courier, entry.orderCount, formatBDT(entry.total))}
                 </Badge>
               ))}
@@ -390,9 +395,7 @@ export function BulkUpload() {
                       </TableCell>
                       <TableCell>
                         <span className="inline-flex items-center gap-1.5">
-                          <span
-                            className={`size-2 rounded-full ${COURIER_DOT[result.best.courier]}`}
-                          />
+                          <Bike className={`size-3 ${COURIER_ICON_COLOR[result.best.courier]}`} />
                           {result.best.courier}
                         </span>
                       </TableCell>

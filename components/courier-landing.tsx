@@ -3,6 +3,7 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { MarketingFooter } from "@/components/marketing-footer";
 import { MarketingNav } from "@/components/marketing-nav";
+import { Reveal } from "@/components/reveal";
 import { breadcrumbJsonLd, SITE_NAME } from "@/lib/site";
 
 interface RateRow {
@@ -85,7 +86,7 @@ export function CourierLanding({
         <p className="mt-2 text-sm text-muted-foreground">{tagline}</p>
         <p className="mt-6 text-sm leading-relaxed text-muted-foreground">{intro}</p>
 
-        <div className="mt-8 overflow-x-auto rounded-lg border border-border">
+        <Reveal className="mt-8 overflow-x-auto rounded-lg border border-border">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/40 text-left text-xs text-muted-foreground">
@@ -102,15 +103,15 @@ export function CourierLanding({
               ))}
             </tbody>
           </table>
-        </div>
+        </Reveal>
         <p className="mt-2 text-xs text-muted-foreground">{rateNote}</p>
 
-        <div className="mt-10 rounded-lg border border-border bg-card p-6">
+        <Reveal className="mt-10 rounded-lg border border-border bg-card p-6">
           <h2 className="text-base font-medium">{faqQuestion}</h2>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{faqAnswer}</p>
-        </div>
+        </Reveal>
 
-        <div className="mt-10 flex flex-col items-start gap-3 rounded-lg border border-border bg-card p-6">
+        <Reveal className="mt-10 flex flex-col items-start gap-3 rounded-lg border border-border bg-card p-6">
           <h2 className="text-base font-medium">
             Compare {courierName} against {joinWithAnd(otherCouriers)} in one place
           </h2>
@@ -121,7 +122,7 @@ export function CourierLanding({
           <Link href="/" className={buttonVariants({ variant: "default" })}>
             Open the full calculator
           </Link>
-        </div>
+        </Reveal>
       </main>
       <MarketingFooter />
     </div>

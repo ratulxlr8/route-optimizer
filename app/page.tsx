@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { ArrowRight, Boxes, Package, Star, X } from "lucide-react";
+import { ArrowRight, Bike, Boxes, Package, Star, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,7 +42,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { TourHelpButton } from "@/components/tour-help-button";
 import {
   COURIER_BAR,
-  COURIER_DOT,
+  COURIER_ICON_COLOR,
   CANONICAL_DISTRICT,
   type CourierResult,
   genericLocationFromDistrict,
@@ -53,6 +53,7 @@ import { useLanguage } from "@/lib/language-store";
 import { removeSavedRoute, toggleSavedRoute, useSavedRoutes } from "@/lib/saved-routes-store";
 import { useLifetimeSavings } from "@/lib/savings-store";
 import { useAutoStartTour } from "@/lib/tour-store";
+import { useCountUp } from "@/lib/use-count-up";
 import { cn, formatBDT } from "@/lib/utils";
 
 /** Combobox items, built once at module scope. The identity of each object has
@@ -173,7 +174,7 @@ function CourierRow({
 
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline gap-2">
-          <span className={`size-1.5 shrink-0 rounded-full ${COURIER_DOT[quote.courier]}`} />
+          <Bike className={`size-3 shrink-0 ${COURIER_ICON_COLOR[quote.courier]}`} />
           {/* No min-w-0 rescue here on purpose: with `truncate`'s overflow:
               hidden, a flex child's automatic min-width becomes 0, so without
               a floor the name — the one thing in this row that must stay
@@ -266,6 +267,10 @@ export default function Home() {
   const savings = cheapest && priciest ? priciest.totalCharge - cheapest.totalCharge : 0;
   const savingsPct =
     priciest && priciest.totalCharge > 0 ? (savings / priciest.totalCharge) * 100 : 0;
+  // Tweened rather than snapped, so the hero total visibly counts up/down as
+  // the route, weight, or price changes instead of jumping between figures.
+  const animatedTotal = useCountUp(cheapest?.totalCharge ?? 0);
+  const animatedSavings = useCountUp(savings);
   // Bars are scaled across the [cheapest, priciest] range rather than from
   // zero: courier rates sit close together (often within 20%), so zero-based
   // bars all render nearly full and the ranking becomes invisible. Cheapest
@@ -520,13 +525,13 @@ export default function Home() {
                         </div>
                       </div>
                       <div className="numeric shrink-0 text-[2.75rem] leading-none font-medium sm:text-5xl">
-                        {formatBDT(cheapest.totalCharge)}
+                        {formatBDT(Math.round(animatedTotal))}
                       </div>
                     </div>
                     {savings > 0 && (
                       <div className="mt-4 border-t border-white/15 pt-2.5 text-xs text-white/70">
                         {t.youSave}{" "}
-                        <span className="numeric text-white">{formatBDT(savings)}</span>{" "}
+                        <span className="numeric text-white">{formatBDT(Math.round(animatedSavings))}</span>{" "}
                         <span className="text-white/50">
                           ({savingsPct.toFixed(0)}%)
                         </span>{" "}

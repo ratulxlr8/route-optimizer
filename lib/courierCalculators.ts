@@ -63,16 +63,19 @@ export interface CalculatorInput {
 
 export type CourierName = "Pathao" | "RedX" | "CarryBee" | "Steadfast" | "Paperfly";
 
-export const COURIER_DOT: Record<CourierName, string> = {
-  Pathao: "bg-red-500",
-  RedX: "bg-orange-500",
-  CarryBee: "bg-amber-500",
-  Steadfast: "bg-blue-500",
-  Paperfly: "bg-purple-500",
+/** Per-courier tint for the small vehicle-icon marker in front of each
+ *  courier's name — a text (not background) colour, since it colours a
+ *  lucide icon via `currentColor` rather than filling a dot. */
+export const COURIER_ICON_COLOR: Record<CourierName, string> = {
+  Pathao: "text-red-500",
+  RedX: "text-orange-500",
+  CarryBee: "text-amber-500",
+  Steadfast: "text-blue-500",
+  Paperfly: "text-purple-500",
 };
 
 /** Per-courier fill for the price-comparison bars — same brand hues as
- *  COURIER_DOT, softened so a full-width bar doesn't overpower the row. */
+ *  COURIER_ICON_COLOR, softened so a full-width bar doesn't overpower the row. */
 export const COURIER_BAR: Record<CourierName, string> = {
   Pathao: "bg-red-500/55",
   RedX: "bg-orange-500/55",

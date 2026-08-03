@@ -1,5 +1,6 @@
 import { MarketingFooter } from "@/components/marketing-footer";
 import { MarketingNav } from "@/components/marketing-nav";
+import { Reveal } from "@/components/reveal";
 import { breadcrumbJsonLd, NAME_VARIANTS, pageMetadata, SITE_NAME } from "@/lib/site";
 
 export const metadata = pageMetadata({
@@ -82,10 +83,10 @@ export default function FaqPage() {
         </p>
         <dl className="mt-8 flex flex-col gap-8">
           {FAQ_ITEMS.map((item) => (
-            <div key={item.question} className="border-b border-border pb-8 last:border-0">
+            <Reveal key={item.question} className="border-b border-border pb-8 last:border-0">
               <dt className="text-base font-medium">{item.question}</dt>
               <dd className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.answer}</dd>
-            </div>
+            </Reveal>
           ))}
         </dl>
       </main>
