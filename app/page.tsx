@@ -232,8 +232,11 @@ export default function Home() {
   const [deliveryDistrictId, setDeliveryDistrictId] = useState<number>(
     CANONICAL_DISTRICT.DHAKA,
   );
-  const [weightKg, setWeightKg] = useState("0.5");
-  const [productPrice, setProductPrice] = useState("1200");
+  // Empty on a fresh landing rather than pre-filled with example values — a
+  // brand-new visitor should see the actual empty state, not an already
+  // computed example result they didn't ask for.
+  const [weightKg, setWeightKg] = useState("");
+  const [productPrice, setProductPrice] = useState("");
   const [isCOD, setIsCOD] = useState(true);
 
   const savedRoutes = useSavedRoutes();
